@@ -1,2 +1,2 @@
-# shadodoom
+# shadoDOOM
 My DOOM Emacs configuration
