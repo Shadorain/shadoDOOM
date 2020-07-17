@@ -1,18 +1,13 @@
 ;;; shado-theme.el --- Custom face theme for Emacs
 
-;; This theme was generated with vimco.el
-;; You can get it from:
-;; <https://github.com/UwUnyaa/vimco>
-
 ;;; Code:
-
 (deftheme shado)
 
 (custom-theme-set-faces 'shado
                         '(underline
                           ((((class color)
                              (min-colors 89))
-                            (:foreground "#458FAA"))))
+                            (:underline t))))
                         '(font-lock-warning-face
                           ((((class color)
                              (min-colors 89))
@@ -52,19 +47,23 @@
                         '(font-lock-doc-face
                           ((((class color)
                              (min-colors 89))
-                            (:foreground "#37d4a7"))))
+                            (:foreground "#6272a4"))))
                         '(font-lock-comment-face
                           ((((class color)
                              (min-colors 89))
-                            (:foreground "#37d4a7"))))
+                            (:foreground "#6272a4"))))
                         '(cursor
                           ((((class color)
                              (min-colors 89))
                             (:background "#6161b3" :foreground "#dfb7e8"))))
+                        '(show-paren-match
+                          ((((class color)
+                             (min-colors 89))
+                            (:foreground "#1ea69d"))))
                         '(show-paren-match-face
                           ((((class color)
                              (min-colors 89))
-                            (:inverse-video t :background "#2f77a1" :foreground "#ffe5ff"))))
+                            (:inverse-video t :foreground "#1ea69d"))))
                         '(default
                            ((((class color)
                               (min-colors 89))
@@ -77,10 +76,22 @@
                           ((((class color)
                              (min-colors 89))
                             (:underline t :weight bold :background "#2F2F4A" :foreground "#6876de"))))
+                        '(org-todo
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#943d84"))))
+                        '(org-headline-todo
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#943d84"))))
+                        '(org-ellipsis
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#0fd1be"))))
                         '(hl-line
                           ((((class color)
                              (min-colors 89))
-                            (:background "#40408f" :foreground "#eed6ee"))))
+                            (:weight bold)))) ; :background "#40408f"
                         '(company-tooltip
                           ((((class color)
                              (min-colors 89))
@@ -105,6 +116,38 @@
                           ((((class color)
                              (min-colors 89))
                             (:foreground "#0fd1be"))))
+                        '(company-tooltip-mouse
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(company-tooltip-search
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(company-tooltip-search-selection
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(header-line-header
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(highlight
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(doom-modeline-bar
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(vimish-fold-overlay
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
+                        '(vimish-fold-mouse-face
+                          ((((class color)
+                             (min-colors 89))
+                            (:background "#9786d1"))))
                         '(ac-candidate-face
                           ((((class color)
                              (min-colors 89))
@@ -158,7 +201,40 @@
                         '(dired-directory
                           ((((class color)
                              (min-colors 89))
-                            (:weight bold :foreground "#00bbff")))))
+                            (:weight bold :foreground "#00bbff"))))
+                        '(org-checkbox
+                          ((((class color)
+                             (min-colors 89))
+                            (:slant italic :foreground "#ff79c6"))))
+                        '(org-checkbox-statistics-done
+                          ((((class color)
+                             (min-colors 89))
+                            (:strike-through t :foreground "#2F2F4A"))))
+                        '(org-code
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight extra-light :foreground "#329090"))))
+                        '(org-document-title
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight extra-bold :foreground "#8897F4"))))
+                        '(org-done
+                          ((((class color)
+                             (min-colors 89))
+                            (:strike-through t :foreground "#2F2F4A"))))
+                        '(org-priority
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight extra-bold :foreground "#de286e"))))
+                        '(org-warning
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight extra-bold :background "#de286e"))))
+                        '(org-headline-done
+                          ((((class color)
+                             (min-colors 89))
+                            (:strike-through t :background "#2F2F4A"))))
+                        )
 
 (provide-theme 'shado)
 

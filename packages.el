@@ -51,3 +51,8 @@
 
 (package! erc)
 (package! hlinum)
+(package! gpastel)
+(package! org-super-agenda)
+(package! org-fancy-priorities)
+(package! evil-multiedit)
+(package! escreen)
