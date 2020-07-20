@@ -143,11 +143,11 @@
                         '(vimish-fold-overlay
                           ((((class color)
                              (min-colors 89))
-                            (:background "#9786d1"))))
+                            (:slant italic :weight light :foreground "#9786d1"))))
                         '(vimish-fold-mouse-face
                           ((((class color)
                              (min-colors 89))
-                            (:background "#9786d1"))))
+                            (:slant italic :weight light :foreground "#9786d1"))))
                         '(ac-candidate-face
                           ((((class color)
                              (min-colors 89))
@@ -233,7 +233,31 @@
                         '(org-headline-done
                           ((((class color)
                              (min-colors 89))
-                            (:strike-through t :background "#2F2F4A"))))
+                            (:strike-through t :foreground "#2F2F4A"))))
+                        '(org-verbatim
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :foreground "#6f88e8"))))
+                        '(org-block
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :width semi-expanded :foreground "#beaff0"))))
+                        '(annotate-annotation
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :foreground "#943d84"))))
+                        '(annotate-annotatation-secondary
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :foreground "#c44faf"))))
+                        '(annotate-highlight
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :underline t))))
+                        '(annotate-highlight-secondary
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight light :underline t))))
                         )
 
 (provide-theme 'shado)

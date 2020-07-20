@@ -79,6 +79,12 @@
 ;; Clipboard paste
 (global-set-key (kbd "C-S-v") #'clipboard-yank)
 
+;; Company
+(require 'company)
+(setq company-idle-delay 0.01
+      company-minimum-prefix-length 1)
+
+;; ERC
 (defun start-erc ()
   "Log into freenode with less keystrokes"
   (interactive)
@@ -116,7 +122,10 @@
   (org-super-agenda-mode))
 
 ;; Fix lag
-;; (setq auto-window-vscroll nil)
+(setq auto-window-vscroll nil)
+
+;; Tab to Spaces
+(setq-default indent-tabs-mode nil)
 
 ;; Evil Snipe
 (require 'evil-snipe)
@@ -130,14 +139,23 @@
 ;; (setq escreen-prefix-char "\C-\\")
 (global-set-key escreen-prefix-char 'escreen-prefix)
 
+;; Eshell
+(global-set-key (kbd "C-S-v") #'clipboard-yank)
+
 ;; Avy
 (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
+
+;; Annotate
+(annotate-mode)
 
 ;; Rainbow-mode
 (use-package! rainbow-mode)
 
 ;; Vimish Folds
+(setq vimish-fold-find-marks-on-open t)
+(setq vimish-fold-global-mode 1)
+(turn-off-evil-vimish-fold-mode)
 (vimish-fold-from-marks)
 
 ;; Org Fancy Priorities
@@ -152,6 +170,7 @@
   (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
 
 (after! org
+  (setq org-hide-emphasis-markers t) ; Hides ugly markup symbols
   (setq org-agenda-skip-scheduled-if-done t
         org-agenda-files (list "~/org/Tech/Emacs/")
         org-ellipsis " ... "
@@ -163,13 +182,15 @@
         '(("TODO" :foreground "#943d84" :weight bold :underline t)
           ("WAITING" :foreground "#9f7efe" :weight normal :underline t)
           ("INPROGRESS" :foreground "#0098dd" :weight normal :underline t)
-          ("DONE" :strike-through t :foreground "#2F2F4A" :weight light :underline t)
-          ("CANCELLED" :strike-through t :foreground "#ff6480" :weight light :underline t))
+          ("DONE" :strike-through t :foreground "#2F2F4A" :background nil :weight light :underline t)
+          ("CANCELLED" :strike-through t :foreground "#de286e" :background nil :weight light :underline t))
         org-priority-faces '((?A :foreground "#de286e")
                              (?B :foreground "#0098dd")
                              (?C :foreground "#a1a1dd"))
         ; org-tags-column -80
     ))
+
+(load! "binds")
 
 ;;; Org-Superstar
 ;; (require 'org-superstar)
@@ -186,11 +207,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(erc-autojoin-channels-alist
+ '(package-selected-packages
    (quote
-    (("freenode.net" "#emacs" "#org-mode" "#haskell" "#xmonad"))))
- '(erc-prompt-for-nickserv-password nil)
- '(package-selected-packages (quote (org-bullets forge rainbow-mode))))
+    (vimish-fold rainbow-mode org-bullets ivy-avy forge evil-snipe evil-multiedit evil-avy company-irony-c-headers company-irony avy-flycheck))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

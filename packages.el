@@ -56,3 +56,5 @@
 (package! org-fancy-priorities)
 (package! evil-multiedit)
 (package! escreen)
+(package! vimish-fold)
+(package! annotate)
