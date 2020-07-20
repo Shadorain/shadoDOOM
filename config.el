@@ -1,14 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-                                        ; Sets opacity
-                                        ; (set-frame-parameter (selected-frame) 'alpha '(85 85))
-                                        ; (add-to-list 'default-frame-alist '(alpha 85 85))
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
 (setq user-full-name "Shadorain"
       user-mail-address "shadorain7517@gmail.com")
 
@@ -16,50 +7,27 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;; Set Theme & Font
 (setq
  doom-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-theme 'shado
- ;; doom-theme 'doom-challenger-deep
+ projectile-project-search-path '("~/.xmonad/" "~/Documents/Programming/" "~/dwm/"))
  ;; doom-font (font-spec :family "Agave" :size 16)
- ;; doom-theme 'shado
- ;;  ;; doom-theme 'doom-one
- projectile-project-search-path '("~/.xmonad/" "~/Documents/Programming/" "~/dwm/")
- data-format-on-save t)
+ ;; doom-theme 'doom-challenger-deep
+ ;; doom-theme 'doom-one
+ ;; data-format-on-save t)
+(set-face-foreground 'line-number "#a1a1dd") ; Line number colors
+(set-face-foreground 'line-number-current-line "#de286e") ; Current line number color
+(add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
 
-(add-to-list 'default-frame-alist '(background-color . "#0f0f17"))
 
 ;; ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
-(require 'hlinum)
-(hlinum-activate)
-(set-face-foreground 'line-number "#a1a1dd")
-(set-face-foreground 'line-number-current-line "#de286e")
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
-;;
 ;; - `load!' for loading external *.el files relative to this one
 ;; - `use-package!' for configuring packages
 ;; - `after!' for running code after a package has loaded
@@ -67,22 +35,12 @@
 ;;   this file. Emacs searches the `load-path' when you load packages with
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
-(put 'customize-variable 'disabled nil)
-
-;; Clipboard paste
-(global-set-key (kbd "C-S-v") #'clipboard-yank)
+;; (put 'customize-variable 'disabled nil)
 
 ;; Company
 (require 'company)
 (setq company-idle-delay 0.01
-      company-minimum-prefix-length 1)
+      company-minimum-prefix-length 2)
 
 ;; ERC
 (defun start-erc ()
@@ -96,33 +54,76 @@
      :nick erc-nick
      :password erc-password)))
 
-(add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
+;; (add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
+
+;; Line Numbers
+(require 'hlinum)
+(hlinum-activate)
+(setq display-line-numbers-type 'relative) ; Relative line numbers with current line shown
 
 ;; Super key instead of Alt
 (setq x-super-keysym 'meta)
 
-;; Org Super Agenda
-(use-package! org-super-agenda
-  :after org-agenda
-  :init
-  (setq org-super-agenda-groups '((:name "Today"
-                                   :time-grid t
-                                   :scheduled today)
-                                  (:name "Due today"
-                                   :deadline today)
-                                  (:name "Important"
-                                   :priority "A")
-                                  (:name "Overdue"
-                                   :deadline past)
-                                  (:name "Due soon"
-                                   :deadline future)
-                                  (:name "Big Outcomes"
-                                   :tag "bo")))
+;; Ya-snippet
+(use-package yasnippet
   :config
-  (org-super-agenda-mode))
+  (yas-global-mode 1)
+  (yas-load-directory "~/.doom.d/snippets"))
+  ;; (yas-load-directory "/usr/share/yasnippet-snippets"))
+
+;; pdf-tools
+(use-package pdf-tools
+  :init (pdf-tools-install)
+  :bind (:map pdf-view-mode-map
+        ("T" . pdf-annot-add-text-annotation)
+        ("D" . pdf-annot-delete)
+        ("t" . pdf-annot-add-highlight-markup-annotation)
+        ("j" . image-next-line)
+        ("k" . image-previous-line)
+        ("l" . image-forward-hscroll)
+        ("h" . image-backward-hscroll)
+        ("G" . pdf-view-last-page)
+        ("g" . nil)
+        ("gg" . pdf-view-first-page)
+        ("C-c C-c" . image-toggle-display)
+        ("C-s" . isearch-forward))
+  :config
+  (setq-default pdf-view-display-size 'fit-page)
+  :custom
+  (yas-minor-mode nil)
+  (pdf-cache-image-limit 32)
+  (pdf-view-max-image-width 2048)
+  (pdf-view-resize-factor 1.8)
+  (pdf-isearch-batch-mode t)
+  (pdf-annot-activate-created-annotations t))
+
+;; Org Super Agenda
+;; (use-package! org-super-agenda
+;;   :after org-agenda
+;;   :init
+;;   (setq org-super-agenda-groups '((:name "Today"
+;;                                    :time-grid t
+;;                                    :scheduled today)
+;;                                   (:name "Due today"
+;;                                    :deadline today)
+;;                                   (:name "Important"
+;;                                    :priority "A")
+;;                                   (:name "Overdue"
+;;                                    :deadline past)
+;;                                   (:name "Due soon"
+;;                                    :deadline future)
+;;                                   (:name "Big Outcomes"
+;;                                    :tag "bo")))
+;;   :config
+;;   (org-super-agenda-mode))
 
 ;; Fix lag
 (setq auto-window-vscroll nil)
+(setq scroll-conservatively 101)
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+;; (setq inhibit-compacting-font-caches t)
+;; (setq linum-relative-backend 'display-line-numbers-mode)
+;; (pixel-scroll-mode)
 
 ;; Tab to Spaces
 (setq-default indent-tabs-mode nil)
@@ -133,43 +134,35 @@
 (evil-snipe-override-mode +1)
 (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
 
-;; Escreen
-(load "escreen")
-(escreen-install)
-;; (setq escreen-prefix-char "\C-\\")
-(global-set-key escreen-prefix-char 'escreen-prefix)
-
-;; Eshell
-(global-set-key (kbd "C-S-v") #'clipboard-yank)
+;; ;; Escreen
+;; (load "escreen")
+;; (escreen-install)
+;; (global-set-key escreen-prefix-char 'escreen-prefix)
 
 ;; Avy
 (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
 
 ;; Annotate
-(annotate-mode)
+;; (annotate-mode)
 
 ;; Rainbow-mode
-(use-package! rainbow-mode)
+;; (use-package! rainbow-mode)
 
 ;; Vimish Folds
+;; (setq vimish-fold-global-mode 1)
 (setq vimish-fold-find-marks-on-open t)
-(setq vimish-fold-global-mode 1)
 (turn-off-evil-vimish-fold-mode)
 (vimish-fold-from-marks)
 
-;; Org Fancy Priorities
-(use-package! org-fancy-priorities
-  :hook (org-mode . org-fancy-priorities-mode)
-  :config
-  (setq org-fancy-priorities-list '("" "" "")))
-
 ;; Org Mode
 ;;; Custom Links
-(defun make-yt-link (youtube_id)
-  (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
-
+;; (defun make-yt-link (youtube_id)
+;;   (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
+(add-hook 'org-mode-hook #'turn-off-smartparens-mode)
+(sp-local-pair 'org-mode "*" nil)
 (after! org
+  (setq org-highlight-latex-and-related nil)
   (setq org-hide-emphasis-markers t) ; Hides ugly markup symbols
   (setq org-agenda-skip-scheduled-if-done t
         org-agenda-files (list "~/org/Tech/Emacs/")
@@ -184,13 +177,17 @@
           ("INPROGRESS" :foreground "#0098dd" :weight normal :underline t)
           ("DONE" :strike-through t :foreground "#2F2F4A" :background nil :weight light :underline t)
           ("CANCELLED" :strike-through t :foreground "#de286e" :background nil :weight light :underline t))
-        org-priority-faces '((?A :foreground "#de286e")
-                             (?B :foreground "#0098dd")
-                             (?C :foreground "#a1a1dd"))
+        ;; org-priority-faces '((?A :foreground "#de286e")
+        ;;                      (?B :foreground "#0098dd")
+        ;;                      (?C :foreground "#a1a1dd"))
         ; org-tags-column -80
     ))
 
-(load! "binds")
+;; Org Fancy Priorities
+(use-package! org-fancy-priorities
+  :hook (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("" "" "")))
 
 ;;; Org-Superstar
 ;; (require 'org-superstar)
@@ -202,6 +199,11 @@
 ;;  org-superstar-item-bullet-alist t
 ;;  org-superstar-prettify-item-bullets t)
 
+;; Loads
+(load! "binds")
+(load "~/.erc-auth")
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -209,7 +211,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (vimish-fold rainbow-mode org-bullets ivy-avy forge evil-snipe evil-multiedit evil-avy company-irony-c-headers company-irony avy-flycheck))))
+    (vimish-fold rainbow-mode ivy-avy forge evil-snipe evil-multiedit evil-avy))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

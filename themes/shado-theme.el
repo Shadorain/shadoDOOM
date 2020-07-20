@@ -91,7 +91,7 @@
                         '(hl-line
                           ((((class color)
                              (min-colors 89))
-                            (:weight bold)))) ; :background "#40408f"
+                            (:background nil)))) ; :background "#40408f"
                         '(company-tooltip
                           ((((class color)
                              (min-colors 89))
