@@ -1,36 +1,72 @@
-;;; config.el --- -*- lexical-binding: t -*-
+#+TITLE: DOOM Config
 
+* DOOM Config.el
+** Initialization Settings
+*** Lexical binding
+#+BEGIN_SRC emacs-lisp
+;;; config.el --- -*- lexical-binding: t -*-
+#+END_SRC
+*** MELPA/ELPA
+#+BEGIN_SRC emacs-lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-
+#+END_SRC
+*** Optimizations
+#+BEGIN_SRC emacs-lisp
 (setq auto-window-vscroll nil)
 (setq scroll-conservatively 101)
 (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
+#+END_SRC
+(setq inhibit-compacting-font-caches t)
+(setq linum-relative-backend 'display-line-numbers-mode)
+(pixel-scroll-mode)
+*** Tabs to Spaces
+#+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
-
+#+END_SRC
+*** Username + Email
+#+BEGIN_SRC emacs-lisp
 (setq user-full-name "Shadorain"
       user-mail-address "shadorain7517@gmail.com")
-
+#+END_SRC
+** Theming
+*** Theme & Font
+#+BEGIN_SRC emacs-lisp
 (setq
  doom-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-theme 'shado
  projectile-project-search-path '("~/.xmonad/" "~/Documents/Programming/" "~/dwm/"))
-
+#+END_SRC
+doom-font (font-spec :family "Agave" :size 16)
+doom-theme 'doom-challenger-deep
+doom-theme 'doom-one
+data-format-on-save t)
+*** Extra Colors
+#+BEGIN_SRC emacs-lisp
 (set-face-foreground 'line-number "#a1a1dd") ; Line number colors
 (set-face-foreground 'line-number-current-line "#de286e") ; Current line number color
 (add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+#+END_SRC
 
+** Package config
+**** Help Message Here are some additional functions/macros that could help you configure Doom: - `load!' for loading external *.el files relative to this one - `use-package!' for configuring packages - `after!' for running code after a package has loaded - `add-load-path!' for adding directories to the `load-path', relative to this file. Emacs searches the `load-path' when you load packages with `require' or `use-package'. - `map!' for binding new keys *** Annotate
+#+BEGIN_SRC emacs-lisp
 ;; (annotate-mode)
-
+#+END_SRC
+*** Avy
+#+BEGIN_SRC emacs-lisp
 ;; (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
-
+#+END_SRC
+*** Company
+#+BEGIN_SRC emacs-lisp
 (require 'company)
 (setq company-idle-delay 0.01
       company-minimum-prefix-length 2)
-
+#+END_SRC
+*** ERC
+#+BEGIN_SRC emacs-lisp
 (defun start-erc ()
   "Log into freenode with less keystrokes"
   (interactive)
@@ -41,25 +77,37 @@
      :port "6667"
      :nick erc-nick
      :password erc-password)))
-
+#+END_SRC
+*** Escreen
+#+BEGIN_SRC emacs-lisp
 (load "escreen")
 (escreen-install)
 (global-set-key escreen-prefix-char 'escreen-prefix)
-
+#+END_SRC
+*** Evil Snipe
+#+BEGIN_SRC emacs-lisp
 (require 'evil-snipe)
 (evil-snipe-mode +1)
 (evil-snipe-override-mode +1)
 (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
-
+#+END_SRC
+*** Gpastel
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
-
+#+END_SRC
+*** Hlinum
+#+BEGIN_SRC emacs-lisp
 (require 'hlinum)
 (hlinum-activate)
 (setq display-line-numbers-type 'relative) ; Relative line numbers with current line shown
-
+#+END_SRC
+*** Loads
+#+BEGIN_SRC emacs-lisp
 (load! "binds")
 (load "~/.erc-auth")
-
+#+END_SRC
+*** Pdf-tools
+#+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
   :init (pdf-tools-install)
   :bind (:map pdf-view-mode-map
@@ -84,18 +132,29 @@
   (pdf-view-resize-factor 1.8)
   (pdf-isearch-batch-mode t)
   (pdf-annot-activate-created-annotations t))
-
+#+END_SRC
+*** Rainbow-mode
+#+BEGIN_SRC emacs-lisp
 ; (use-package! rainbow-mode)
-
+#+END_SRC
+*** Yasnippet-snippets
+#+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :config
   (yas-global-mode 1)
   (yas-load-directory "~/.doom.d/snippets"))
-
+#+END_SRC
+  (yas-load-directory "/usr/share/yasnippet-snippets"))
+*** Vimish Folds
+#+BEGIN_SRC emacs-lisp
 (setq vimish-fold-find-marks-on-open t)
 (turn-off-evil-vimish-fold-mode)
 (vimish-fold-from-marks)
-
+#+END_SRC
+(setq vimish-fold-global-mode 1)
+** Org-Mode
+*** General org-mode
+#+BEGIN_SRC emacs-lisp
 (after! org
   (setq org-highlight-latex-and-related nil)
   (setq org-hide-emphasis-markers t) ; Hides ugly markup symbols
@@ -118,15 +177,21 @@
         ; org-tags-column -80
     ))
 (setq org-directory "~/org/")
-
+#+END_SRC
+*** Custom Links
+#+BEGIN_SRC emacs-lisp
 ; (defun make-yt-link (youtube_id)
 ;   (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
-
+#+END_SRC
+*** Org Fancy Priorities
+#+BEGIN_SRC emacs-lisp
 (use-package! org-fancy-priorities
   :hook (org-mode . org-fancy-priorities-mode)
   :config
   (setq org-fancy-priorities-list '("" "" "")))
-
+#+END_SRC
+*** Org Super Agenda *
+#+BEGIN_SRC emacs-lisp
 (use-package! org-super-agenda
   :after org-agenda
   :init
@@ -145,7 +210,9 @@
                                    :tag "bo")))
   :config
   (org-super-agenda-mode))
-
+#+END_SRC
+*** Org-Superstar
+#+BEGIN_SRC emacs-lisp
 ;; (require 'org-superstar)
 ;; (setq org-bullets-face-name (quote org-bullet-face))
 ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -154,7 +221,9 @@
 ;;  org-superstar-cycle-headline-bullets t
 ;;  org-superstar-item-bullet-alist t
 ;;  org-superstar-prettify-item-bullets t)
-
+#+END_SRC
+** Custom Set Variables
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -169,5 +238,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
+#+END_SRC
+** Compile Org -> Elisp
+#+BEGIN_SRC emacs-lisp
 ;; (org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
+#+END_SRC

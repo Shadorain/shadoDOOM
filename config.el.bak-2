@@ -170,4 +170,4 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; (org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
+(org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
