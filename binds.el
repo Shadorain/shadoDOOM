@@ -8,3 +8,6 @@
 
 ;; Eshell
 (evil-define-key 'normal 'global (kbd "SPC o t") 'eshell)
+
+;; Pdf Autosave/Compile
+(evil-define-key 'normal 'global (kbd "SPC o p") 'org-auto-export-on)

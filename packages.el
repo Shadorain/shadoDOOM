@@ -60,3 +60,4 @@
 (package! annotate)
 (package! yasnippet-snippets)
 (package! pdf-tools)
+(package! auctex)

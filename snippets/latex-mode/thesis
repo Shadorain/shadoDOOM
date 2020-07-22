@@ -13,7 +13,6 @@
 % -- Doublespacing: --
 \usepackage{setspace}
 \doublespacing
- asdasdasAd
 
 % Fancy-header package to modify header/page numbering (insert last name)
 \usepackage{fancyhdr}
@@ -30,11 +29,9 @@
 %12pt is one-sixth of an inch. Subtract this from 0.5in to get headsep value
 \setlength\headsep{0.333in}
 
-%
 %Works cited environment
 %(to start, use \begin{workscited...}, each entry preceded by \bibent)
 % - from Ryan Alcock's MLA style file
-%
 \newcommand{\bibent}{\noindent \hangindent 40pt}
 \newenvironment{workscited}{\newpage \begin{center} Works Cited \end{center}}{\newpage }
 

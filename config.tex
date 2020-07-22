@@ -1,8 +1,56 @@
-;;; config.el --- -*- lexical-binding: t -*-
+% Created 2020-07-22 Wed 16:22
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Shadorain}
+\date{\today}
+\title{DOOM Config}
+\hypersetup{
+ pdfauthor={Shadorain},
+ pdftitle={DOOM Config},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.4)}, 
+ pdflang={English}}
+\begin{document}
 
+\maketitle
+\tableofcontents
+
+
+\section{DOOM Config.el}
+\label{sec:org77904ff}
+\subsection{Initialization Settings}
+\label{sec:org5f7b2c0}
+\subsubsection{Lexical binding}
+\label{sec:org344496d}
+\begin{verbatim}
+;;; config.el --- -*- lexical-binding: t -*-
+\end{verbatim}
+\subsubsection{Emacs Package Installers}
+\label{sec:orgca71cdd}
+\begin{enumerate}
+\item MELPA/ELPA
+\label{sec:orgf917cbf}
+\begin{verbatim}
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-
+\end{verbatim}
+\item GNU
+\label{sec:orgf8eccf8}
+\begin{verbatim}
 (add-to-list 'package-archives
          '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
@@ -12,35 +60,80 @@
 (setq package-check-signature nil)
 (eval-when-compile
   (require 'use-package))
-
+\end{verbatim}
+\end{enumerate}
+\subsubsection{Optimizations}
+\label{sec:orgc37e15d}
+\begin{verbatim}
 (setq auto-window-vscroll nil)
 (setq scroll-conservatively 101)
 ;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
+\end{verbatim}
+(setq inhibit-compacting-font-caches t)
+(setq linum-relative-backend 'display-line-numbers-mode)
+(pixel-scroll-mode)
+\subsubsection{Tabs to Spaces}
+\label{sec:org01808c5}
+\begin{verbatim}
 (setq-default indent-tabs-mode nil)
-
+\end{verbatim}
+\subsubsection{Username + Email}
+\label{sec:orgdc8c5a9}
+\begin{verbatim}
 (setq user-full-name "Shadorain"
       user-mail-address "shadorain7517@gmail.com")
-
+\end{verbatim}
+\subsection{Theming}
+\label{sec:org35b5390}
+\subsubsection{Theme \& Font}
+\label{sec:orga659a29}
+\begin{verbatim}
 (setq
  doom-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-theme 'shado
  projectile-project-search-path '("~/.xmonad/" "~/Documents/Programming/" "~/dwm/"))
-
+\end{verbatim}
+doom-font (font-spec :family ``Agave'' :size 16)
+doom-theme 'doom-challenger-deep
+doom-theme 'doom-one
+data-format-on-save t)
+\subsubsection{Extra Colors}
+\label{sec:orge3b2436}
+\begin{verbatim}
 (set-face-foreground 'line-number "#a1a1dd") ; Line number colors
 (set-face-foreground 'line-number-current-line "#de286e") ; Current line number color
 (add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+\end{verbatim}
 
+\subsection{Package config}
+\label{sec:org17be52a}
+\begin{enumerate}
+\item Help Message
+\label{sec:org7281874}
+Here are some additional functions/macros that could help you configure Doom: - `load!' for loading external *.el files relative to this one - `use-package!' for configuring packages - `after!' for running code after a package has loaded - `add-load-path!' for adding directories to the `load-path', relative to this file. Emacs searches the `load-path' when you load packages with `require' or `use-package'. - `map!' for binding new keys
+\end{enumerate}
+\subsubsection{Annotate}
+\label{sec:orgced4498}
+\begin{verbatim}
 ;; (annotate-mode)
-
+\end{verbatim}
+\subsubsection{Avy}
+\label{sec:orgdfd0ae0}
+\begin{verbatim}
 ;; (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
-
+\end{verbatim}
+\subsubsection{Company}
+\label{sec:org863e4a0}
+\begin{verbatim}
 (require 'company)
 (setq company-idle-delay 0.01
       company-minimum-prefix-length 2)
-
+\end{verbatim}
+\subsubsection{ERC}
+\label{sec:org8ac470d}
+\begin{verbatim}
 (defun start-erc ()
   "Log into freenode with less keystrokes"
   (interactive)
@@ -51,25 +144,43 @@
      :port "6667"
      :nick erc-nick
      :password erc-password)))
-
+\end{verbatim}
+\subsubsection{Escreen}
+\label{sec:org1e5946b}
+\begin{verbatim}
 (load "escreen")
 (escreen-install)
 (global-set-key escreen-prefix-char 'escreen-prefix)
-
+\end{verbatim}
+\subsubsection{Evil Snipe}
+\label{sec:orga85d7e0}
+\begin{verbatim}
 (require 'evil-snipe)
 (evil-snipe-mode +1)
 (evil-snipe-override-mode +1)
 (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
-
+\end{verbatim}
+\subsubsection{Gpastel}
+\label{sec:orgdf2cf7d}
+\begin{verbatim}
 (add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
-
+\end{verbatim}
+\subsubsection{Hlinum}
+\label{sec:org0af1c1b}
+\begin{verbatim}
 (require 'hlinum)
 (hlinum-activate)
 (setq display-line-numbers-type 'relative) ; Relative line numbers with current line shown
-
+\end{verbatim}
+\subsubsection{Loads}
+\label{sec:org9df151b}
+\begin{verbatim}
 (load! "binds")
 (load "~/.erc-auth")
-
+\end{verbatim}
+\subsubsection{Pdf-tools}
+\label{sec:org964249e}
+\begin{verbatim}
 (require 'ox-latex)
 (require 'pdf-tools)
 ;; (setq Tex-auto-save t)
@@ -110,18 +221,35 @@
   (pdf-annot-activate-created-annotations t))
 (setq pdf-sync-backward-display-action t)
 (setq pdf-sync-forward-display-action t)
-
+\end{verbatim}
+\subsubsection{Rainbow-mode}
+\label{sec:orgff7869a}
+\begin{verbatim}
 ; (use-package! rainbow-mode)
-
+\end{verbatim}
+\subsubsection{Yasnippet-snippets}
+\label{sec:org367120f}
+\begin{verbatim}
 (use-package yasnippet
   :config
   (yas-global-mode 1)
   (yas-load-directory "~/.doom.d/snippets"))
-
+\end{verbatim}
+(yas-load-directory ``/usr/share/yasnippet-snippets''))
+\subsubsection{Vimish Folds}
+\label{sec:orgfb58292}
+\begin{verbatim}
 (setq vimish-fold-find-marks-on-open t)
 (turn-off-evil-vimish-fold-mode)
 (vimish-fold-from-marks)
-
+\end{verbatim}
+(setq vimish-fold-global-mode 1)
+\subsection{Latex}
+\label{sec:org4706b94}
+\subsubsection{Auto-Compile + Refresh (from org)}
+\label{sec:org9473bb8}
+These two functions first time running will open the pdf in a split, concurring saves will update the pdf!
+\begin{verbatim}
 (setq
  split-width-threshold 0
  split-height-threshold nil)
@@ -139,7 +267,12 @@
      (windmove-right)
      (org-open-file (org-latex-export-to-pdf))
      (windmove-left))))
-
+\end{verbatim}
+\subsection{Org-Mode}
+\label{sec:org0ece85e}
+\subsubsection{General org-mode}
+\label{sec:org8534359}
+\begin{verbatim}
 (after! org
   (setq org-highlight-latex-and-related nil)
   (setq org-hide-emphasis-markers t) ; Hides ugly markup symbols
@@ -162,17 +295,29 @@
         ; org-tags-column -80
     ))
 (setq org-directory "~/org/")
-
+\end{verbatim}
+\subsubsection{org-startup-folded}
+\label{sec:org57cdb10}
+\begin{verbatim}
 (setq org-startup-folded t)
-
+\end{verbatim}
+\subsubsection{Custom Links}
+\label{sec:org7c1c77b}
+\begin{verbatim}
 ; (defun make-yt-link (youtube_id)
 ;   (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
-
+\end{verbatim}
+\subsubsection{Org Fancy Priorities}
+\label{sec:orgbfdc37e}
+\begin{verbatim}
 (use-package! org-fancy-priorities
   :hook (org-mode . org-fancy-priorities-mode)
   :config
   (setq org-fancy-priorities-list '("" "" "")))
-
+\end{verbatim}
+\subsubsection{Org Super Agenda *}
+\label{sec:org30c756c}
+\begin{verbatim}
 (use-package! org-super-agenda
   :after org-agenda
   :init
@@ -191,7 +336,10 @@
                                    :tag "bo")))
   :config
   (org-super-agenda-mode))
-
+\end{verbatim}
+\subsubsection{Org-Superstar}
+\label{sec:orgb84fb1d}
+\begin{verbatim}
 ;; (require 'org-superstar)
 ;; (setq org-bullets-face-name (quote org-bullet-face))
 ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -200,7 +348,10 @@
 ;;  org-superstar-cycle-headline-bullets t
 ;;  org-superstar-item-bullet-alist t
 ;;  org-superstar-prettify-item-bullets t)
-
+\end{verbatim}
+\subsection{Custom Set Variables}
+\label{sec:orgbffa7f5}
+\begin{verbatim}
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -215,5 +366,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
+\end{verbatim}
+\subsection{Compile Org -> Elisp}
+\label{sec:org7df7858}
+\begin{verbatim}
 ;; (org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
+\end{verbatim}
+\end{document}

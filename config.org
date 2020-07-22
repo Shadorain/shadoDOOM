@@ -6,16 +6,29 @@
 #+BEGIN_SRC emacs-lisp
 ;;; config.el --- -*- lexical-binding: t -*-
 #+END_SRC
-*** MELPA/ELPA
+*** Emacs Package Installers
+**** MELPA/ELPA
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+#+END_SRC
+**** GNU
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives
+         '("gnu" . "http://elpa.gnu.org/packages/"))
+(package-initialize)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(setq package-check-signature nil)
+(eval-when-compile
+  (require 'use-package))
 #+END_SRC
 *** Optimizations
 #+BEGIN_SRC emacs-lisp
 (setq auto-window-vscroll nil)
 (setq scroll-conservatively 101)
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+;; (add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
 #+END_SRC
 (setq inhibit-compacting-font-caches t)
 (setq linum-relative-backend 'display-line-numbers-mode)
@@ -50,7 +63,9 @@ data-format-on-save t)
 #+END_SRC
 
 ** Package config
-**** Help Message Here are some additional functions/macros that could help you configure Doom: - `load!' for loading external *.el files relative to this one - `use-package!' for configuring packages - `after!' for running code after a package has loaded - `add-load-path!' for adding directories to the `load-path', relative to this file. Emacs searches the `load-path' when you load packages with `require' or `use-package'. - `map!' for binding new keys *** Annotate
+**** Help Message
+Here are some additional functions/macros that could help you configure Doom: - `load!' for loading external *.el files relative to this one - `use-package!' for configuring packages - `after!' for running code after a package has loaded - `add-load-path!' for adding directories to the `load-path', relative to this file. Emacs searches the `load-path' when you load packages with `require' or `use-package'. - `map!' for binding new keys
+*** Annotate
 #+BEGIN_SRC emacs-lisp
 ;; (annotate-mode)
 #+END_SRC
@@ -108,6 +123,20 @@ data-format-on-save t)
 #+END_SRC
 *** Pdf-tools
 #+BEGIN_SRC emacs-lisp
+(require 'ox-latex)
+(require 'pdf-tools)
+;; (setq Tex-auto-save t)
+;; (setq Tex-parse-self t)
+;; (setq-default Tex-master nil)
+;; (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+;; (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (setq reftex-plug-into-AUCTeX t)
+;; (setq TeX-PDF-mode t)
+;; (pdf-tools-install)
+(with-eval-after-load 'pdf-tools
+    (require 'pdf-sync))
 (use-package pdf-tools
   :init (pdf-tools-install)
   :bind (:map pdf-view-mode-map
@@ -132,6 +161,8 @@ data-format-on-save t)
   (pdf-view-resize-factor 1.8)
   (pdf-isearch-batch-mode t)
   (pdf-annot-activate-created-annotations t))
+(setq pdf-sync-backward-display-action t)
+(setq pdf-sync-forward-display-action t)
 #+END_SRC
 *** Rainbow-mode
 #+BEGIN_SRC emacs-lisp
@@ -152,6 +183,28 @@ data-format-on-save t)
 (vimish-fold-from-marks)
 #+END_SRC
 (setq vimish-fold-global-mode 1)
+** Latex
+*** Auto-Compile + Refresh (from org)
+These two functions first time running will open the pdf in a split, concurring saves will update the pdf!
+#+BEGIN_SRC emacs-lisp
+(setq
+ split-width-threshold 0
+ split-height-threshold nil)
+
+(global-auto-revert-mode t)
+(defun org-export-pdf-then-refresh()
+  (org-latex-export-to-pdf))
+
+(defun org-auto-export-on()
+  (interactive)
+  (cond
+    ((string-match "LATEX_CMD: latex" (buffer-string))
+     (add-hook 'after-save-hook 'org-export-pdf-then-refresh t t)
+     (split-window-right)
+     (windmove-right)
+     (org-open-file (org-latex-export-to-pdf))
+     (windmove-left))))
+#+END_SRC
 ** Org-Mode
 *** General org-mode
 #+BEGIN_SRC emacs-lisp
@@ -177,6 +230,10 @@ data-format-on-save t)
         ; org-tags-column -80
     ))
 (setq org-directory "~/org/")
+#+END_SRC
+*** org-startup-folded
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-folded t)
 #+END_SRC
 *** Custom Links
 #+BEGIN_SRC emacs-lisp
