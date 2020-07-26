@@ -11,3 +11,4 @@
 
 ;; Pdf Autosave/Compile
 (evil-define-key 'normal 'global (kbd "SPC o p") 'org-auto-export-on)
+(evil-define-key 'normal 'global (kbd "SPC o l") 'latex-auto-export-on)

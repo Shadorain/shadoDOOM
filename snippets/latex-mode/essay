@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: essay
+# key: essay
+# condition: t                                      
+# --
+% LaTeX Document written by Shadorain within Emacs {{{
+\input{/home/shadow/.tex/school/essay}
+\begin{document}
+\professor{Professor ${1:PROFESSOR}} \class{${2:CLASS}}
+\title{${3:TITLE}}
+\makeheader
+%}}}
+
+%%% Introduction {{{
+  ${4:Document}
+%%% }}}
+%% Closing {{{
+\end{document}
+%% }}}
