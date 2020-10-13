@@ -166,6 +166,14 @@
                           ((((class color)
                              (min-colors 89))
                             (:background "#40408f" :foreground "#bfaee3"))))
+                        '(mode-line-highlight
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight bold :foreground "#423c7a"))))
+                        '(mode-line-emphasis
+                          ((((class color)
+                             (min-colors 89))
+                            (:weight bold :foreground "#423c7a"))))
                         '(mode-line-inactive
                           ((((class color)
                              (min-colors 89))
@@ -173,15 +181,27 @@
                         '(mode-line-buffer-id
                           ((((class color)
                              (min-colors 89))
-                            (:weight bold :background "#35355e" :foreground "#1B1B29"))))
+                            (:weight bold :background "#1ea69d" :foreground "#1f1f30"))))
                         '(mode-line
                           ((((class color)
                              (min-colors 89))
-                            (:weight bold :background "#35355e" :foreground "#1B1B29"))))
+                            (:weight bold :background "#14141f" :foreground "#db3567"))))
                         '(fringe
                           ((((class color)
                              (min-colors 89))
-                            (:underline t :background "#1B1B29" :foreground "#a1a1dd"))))
+                            (:underline t :background "#14141f" :foreground "#a1a1dd"))))
+                        '(window-divider
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#14141f"))))
+                        '(window-divider-first-pixel
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#14141f"))))
+                        '(window-divider-last-pixel
+                          ((((class color)
+                             (min-colors 89))
+                            (:underline t :foreground "#14141f"))))
                         '(global-linum-mode
                           ((((class color)
                              (min-colors 89))
@@ -258,6 +278,14 @@
                           ((((class color)
                              (min-colors 89))
                             (:weight light :underline t))))
+                        '(whitespace-tab
+                          ((((class color)
+                             (min-colors 89))
+                            (:foreground "#2f2f4a" :background nil))))
+                        '(whitespace-space
+                          ((((class color)
+                             (min-colors 89))
+                            (:foreground "#382d73" :background nil))))
                         )
 
 (provide-theme 'shado)

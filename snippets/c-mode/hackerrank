@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: HackerRank
+# key: hr
+# condition: t
+# --
+
+// | HackerRank C : $1
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main ()
+{
+    char s[100];
+    $2
+    return 0;
+}

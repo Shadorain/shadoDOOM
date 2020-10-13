@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Scrot
+# key: scrot
+# condition: t                                                     
+# --
+[[~/Pictures/Screenshots/`(format-time-string "%Y-%m-%d_%H-%M")`$0.png]]

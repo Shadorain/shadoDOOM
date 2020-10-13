@@ -42,6 +42,11 @@
 (setq user-full-name "Shadorain"
       user-mail-address "shadorain7517@gmail.com")
 #+END_SRC
+*** Custom Time Stamp
+<2020-08-24 Mon> --> [Mon, 08/24/20]
+#+BEGIN_SRC emacs-lisp
+(setq org-time-stamp-custom-formats '("[%a, %m/%d/%y]" . "[%a, %m/%d/%y -- %H:%M]"))
+#+END_SRC
 ** Theming
 *** Theme & Font
 #+BEGIN_SRC emacs-lisp
@@ -59,15 +64,46 @@ data-format-on-save t)
 #+BEGIN_SRC emacs-lisp
 (set-face-foreground 'line-number "#a1a1dd") ; Line number colors
 (set-face-foreground 'line-number-current-line "#de286e") ; Current line number color
-(add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+;; (add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+(add-to-list 'default-frame-alist '(background-color . "#08080d")) ; Background color
 #+END_SRC
-
 ** Package config
 **** Help Message
 Here are some additional functions/macros that could help you configure Doom: - `load!' for loading external *.el files relative to this one - `use-package!' for configuring packages - `after!' for running code after a package has loaded - `add-load-path!' for adding directories to the `load-path', relative to this file. Emacs searches the `load-path' when you load packages with `require' or `use-package'. - `map!' for binding new keys
 *** Annotate
 #+BEGIN_SRC emacs-lisp
 ;; (annotate-mode)
+#+END_SRC
+*** Artist mode
+#+BEGIN_SRC emacs-lisp
+ ;;; integrate ido with artist-mode
+   (defun artist-ido-select-operation (type)
+     "Use ido to select a drawing operation in artist-mode"
+     (interactive (list (ido-completing-read "Drawing operation: "
+                                             (list "Pen" "Pen Line" "line" "straight line" "rectangle"
+                                                   "square" "poly-line" "straight poly-line" "ellipse"
+                                                   "circle" "text see-thru" "text-overwrite" "spray-can"
+                                                   "erase char" "erase rectangle" "vaporize line" "vaporize lines"
+                                                   "cut rectangle" "cut square" "copy rectangle" "copy square"
+                                                   "paste" "flood-fill"))))
+     (artist-select-operation type))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(defun artist-ido-select-settings (type)
+     "Use ido to select a setting to change in artist-mode"
+     (interactive (list (ido-completing-read "Setting: "
+                                             (list "Set Fill" "Set Line" "Set Erase" "Spray-size" "Spray-chars"
+                                                   "Rubber-banding" "Trimming" "Borders"))))
+     (if (equal type "Spray-size")
+       (artist-select-operation "spray set size")
+       (call-interactively (artist-fc-get-fn-from-symbol
+                (cdr (assoc type '(("Set Fill" . set-fill)
+                           ("Set Line" . set-line)
+                           ("Set Erase" . set-erase)
+                           ("Rubber-banding" . rubber-band)
+                           ("Trimming" . trimming)
+                           ("Borders" . borders)
+                           ("Spray-chars" . spray-chars))))))))
 #+END_SRC
 *** Avy
 #+BEGIN_SRC emacs-lisp
@@ -80,6 +116,24 @@ Here are some additional functions/macros that could help you configure Doom: - 
 (setq company-idle-delay 0.01
       company-minimum-prefix-length 2)
 #+END_SRC
+*** Deft
+#+BEGIN_SRC emacs-lisp
+(setq deft-directory "~/org"
+      deft-exensions '("org")
+      deft-recursive t)
+#+END_SRC
+*** Doom-Modeline
+#+BEGIN_SRC emacs-lisp
+(setq doom-modeline-height 10)
+(set-face-attribute 'mode-line nil :family "Agave" :height 10)
+(set-face-attribute 'mode-line-inactive nil :family "Agave" :height 10)
+#+END_SRC
+(doom-modeline-def-modeline 'main
+  '(bar matches buffer-info remote-host buffer-position parrot selection-info)
+  '(misc-info minor-modes input-method buffer-encoding major-mode process vcs checker))
+(defun setup-custom-doom-modeline ()
+   (doom-modeline-set-modeline 'my-simple-line 'default))
+(add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline)
 *** ERC
 #+BEGIN_SRC emacs-lisp
 (defun start-erc ()
@@ -95,9 +149,20 @@ Here are some additional functions/macros that could help you configure Doom: - 
 #+END_SRC
 *** Escreen
 #+BEGIN_SRC emacs-lisp
-(load "escreen")
-(escreen-install)
-(global-set-key escreen-prefix-char 'escreen-prefix)
+;; (load "escreen")
+;; (escreen-install)
+;; (global-set-key escreen-prefix-char 'escreen-prefix)
+#+END_SRC
+*** eyebrowse
+#+BEGIN_SRC emacs-lisp
+;; (require 'eyebrowse)
+;; (use-package eyebrowse                  ; Easy workspaces creation and switching
+  ;; :ensure t
+  ;; :config
+  ;;   (validate-setq eyebrowse-mode-line-separator " "
+  ;;                   eyebrowse-new-workspace t)
+
+  (eyebrowse-mode t)
 #+END_SRC
 *** Evil Snipe
 #+BEGIN_SRC emacs-lisp
@@ -114,6 +179,18 @@ Be off by default
 *** Gpastel
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
+#+END_SRC
+*** Haskell
+#+BEGIN_SRC emacs-lisp
+(setq haskell-process-log t)
+(add-hook 'haskell-mode-hook 'haskell-indent-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'hindent-mode)
+
+(require 'lsp)
+(require 'lsp-haskell)
+(add-hook 'haskell-mode-hook #'lsp)
 #+END_SRC
 *** Hlinum
 #+BEGIN_SRC emacs-lisp
@@ -132,6 +209,11 @@ Be off by default
     (outline-minor-mode-hook . outline-minor-faces-add-font-lock-keywords)))
 (global-set-key (kbd "C-`") 'outline-show-entry)
 (global-set-key (kbd "C-~") 'outline-hide-entry)
+#+END_SRC
+*** Mu4e
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
 #+END_SRC
 *** Pdf-tools
 #+BEGIN_SRC emacs-lisp
@@ -257,6 +339,28 @@ Colors
 (vimish-fold-from-marks)
 #+END_SRC
 (setq vimish-fold-global-mode 1)
+*** Whitespace Mode
+#+BEGIN_SRC emacs-lisp
+;; (global-whitespace-mode 1)
+;; (progn
+;;   (setq whitespace-style (quote (face spaces tabs space-mark tab-mark )))
+;;   (setq whitespace-display-mappings
+;;         '((space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」; 4347
+;;           (tab-mark 9 [9655 9] [92 9])))) ; tabs
+;; (add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
+;; (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
+#+END_SRC
+*** Eglot
+#+BEGIN_SRC emacs-lisp
+(require 'eglot)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+#+END_SRC
 ** Latex
 *** Auto-Compile + Refresh (latex)
 Set up vars/funcs
@@ -303,19 +407,29 @@ These custom functions first time running will open the pdf in a split, concurri
         org-fontify-emphasized-text t
         ;; org-ellipsis "➞"
         ; org-add-link-type "yt" #'make-yt-link
-        org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-todo-keywords '((sequence "TODO(t)" "TIP(T)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)"))
         org-todo-keyword-faces
         '(("TODO" :foreground "#943d84" :weight bold :underline t)
+          ("TIP" :foreground "#29e3e3")
           ("WAITING" :foreground "#9f7efe" :weight normal :underline t)
           ("INPROGRESS" :foreground "#0098dd" :weight normal :underline t)
           ("DONE" :strike-through t :foreground "#2F2F4A" :background nil :weight light :underline t)
           ("CANCELLED" :strike-through t :foreground "#de286e" :background nil :weight light :underline t))
-        ;; org-priority-faces '((?A :foreground "#de286e")
-        ;;                      (?B :foreground "#0098dd")
-        ;;                      (?C :foreground "#a1a1dd"))
+        org-priority-faces '((?A :foreground "#de286e")
+                             (?B :foreground "#0098dd")
+                             (?C :foreground "#a1a1dd"))
         ; org-tags-column -80
     ))
 (setq org-directory "~/org/")
+#+END_SRC
+*** Org -> Markdown
+#+BEGIN_SRC emacs-lisp
+;; (defun md-auto-export-on()
+;;   (interactive)
+;;     (add-hook 'after-save-hook 'org-md-export-to-markdown)
+;;     )
+;; (eval-after-load 'org-mode
+;;   '(local-set-key (kbd "C-m") #'md-auto-export-on))
 #+END_SRC
 *** org-startup-folded
 #+BEGIN_SRC emacs-lisp
@@ -328,6 +442,32 @@ These custom functions first time running will open the pdf in a split, concurri
 #+END_SRC
 *** Org Agenda
 **** Custom Files
+*** Org Brain
+#+BEGIN_SRC emacs-lisp
+(use-package org-brain :ensure t
+  :init
+  (setq org-brain-path "~/org/brain/")
+  ;; For Evil users
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+  :config
+  (bind-key "C-c b" 'org-brain-prefix-map org-mode-map)
+  (setq org-id-track-globally t)
+  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+  (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
+  (push '("b" "Brain" plain (function org-brain-goto-end)
+          "* %i%?" :empty-lines 1)
+        org-capture-templates)
+  (setq org-brain-visualize-default-choices 'all)
+  (setq org-brain-title-max-length 12)
+  (setq org-brain-include-file-entries nil
+        org-brain-file-entries-use-title nil))
+
+;; Allows you to edit entries directly from org-brain-visualize
+(use-package polymode
+  :config
+  (add-hook 'org-brain-visualize-mode-hook #'org-brain-polymode))
+#+END_SRC
 *** Org Fancy Priorities
 #+BEGIN_SRC emacs-lisp
 (use-package! org-fancy-priorities
@@ -396,8 +536,4 @@ Loads my updateable org-agenda-files function
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-#+END_SRC
-** Compile Org -> Elisp
-#+BEGIN_SRC emacs-lisp
-;; (org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
 #+END_SRC

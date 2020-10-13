@@ -22,6 +22,8 @@
 (setq user-full-name "Shadorain"
       user-mail-address "shadorain7517@gmail.com")
 
+(setq org-time-stamp-custom-formats '("[%a, %m/%d/%y]" . "[%a, %m/%d/%y -- %H:%M]"))
+
 (setq
  doom-font (font-spec :family "Mononoki Nerd Font" :size 16)
  doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 16)
@@ -30,9 +32,38 @@
 
 (set-face-foreground 'line-number "#a1a1dd") ; Line number colors
 (set-face-foreground 'line-number-current-line "#de286e") ; Current line number color
-(add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+;; (add-to-list 'default-frame-alist '(background-color . "#0f0f17")) ; Background color
+(add-to-list 'default-frame-alist '(background-color . "#08080d")) ; Background color
 
 ;; (annotate-mode)
+
+;;; integrate ido with artist-mode
+  (defun artist-ido-select-operation (type)
+    "Use ido to select a drawing operation in artist-mode"
+    (interactive (list (ido-completing-read "Drawing operation: "
+                                            (list "Pen" "Pen Line" "line" "straight line" "rectangle"
+                                                  "square" "poly-line" "straight poly-line" "ellipse"
+                                                  "circle" "text see-thru" "text-overwrite" "spray-can"
+                                                  "erase char" "erase rectangle" "vaporize line" "vaporize lines"
+                                                  "cut rectangle" "cut square" "copy rectangle" "copy square"
+                                                  "paste" "flood-fill"))))
+    (artist-select-operation type))
+
+(defun artist-ido-select-settings (type)
+     "Use ido to select a setting to change in artist-mode"
+     (interactive (list (ido-completing-read "Setting: "
+                                             (list "Set Fill" "Set Line" "Set Erase" "Spray-size" "Spray-chars"
+                                                   "Rubber-banding" "Trimming" "Borders"))))
+     (if (equal type "Spray-size")
+       (artist-select-operation "spray set size")
+       (call-interactively (artist-fc-get-fn-from-symbol
+                (cdr (assoc type '(("Set Fill" . set-fill)
+                           ("Set Line" . set-line)
+                           ("Set Erase" . set-erase)
+                           ("Rubber-banding" . rubber-band)
+                           ("Trimming" . trimming)
+                           ("Borders" . borders)
+                           ("Spray-chars" . spray-chars))))))))
 
 ;; (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
@@ -40,6 +71,14 @@
 (require 'company)
 (setq company-idle-delay 0.01
       company-minimum-prefix-length 2)
+
+(setq deft-directory "~/org"
+      deft-exensions '("org")
+      deft-recursive t)
+
+(setq doom-modeline-height 10)
+(set-face-attribute 'mode-line nil :family "Agave" :height 10)
+(set-face-attribute 'mode-line-inactive nil :family "Agave" :height 10)
 
 (defun start-erc ()
   "Log into freenode with less keystrokes"
@@ -52,9 +91,18 @@
      :nick erc-nick
      :password erc-password)))
 
-(load "escreen")
-(escreen-install)
-(global-set-key escreen-prefix-char 'escreen-prefix)
+;; (load "escreen")
+;; (escreen-install)
+;; (global-set-key escreen-prefix-char 'escreen-prefix)
+
+;; (require 'eyebrowse)
+;; (use-package eyebrowse                  ; Easy workspaces creation and switching
+  ;; :ensure t
+  ;; :config
+  ;;   (validate-setq eyebrowse-mode-line-separator " "
+  ;;                   eyebrowse-new-workspace t)
+
+  (eyebrowse-mode t)
 
 (require 'evil-snipe)
 (evil-snipe-mode +1)
@@ -64,6 +112,16 @@
 (flyspell-mode 0)
 
 (add-to-list 'load-path "~/.emacs.d/lib/gpastel/")
+
+(setq haskell-process-log t)
+(add-hook 'haskell-mode-hook 'haskell-indent-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'hindent-mode)
+
+(require 'lsp)
+(require 'lsp-haskell)
+(add-hook 'haskell-mode-hook #'lsp)
 
 (require 'hlinum)
 (hlinum-activate)
@@ -78,6 +136,9 @@
     (outline-minor-mode-hook . outline-minor-faces-add-font-lock-keywords)))
 (global-set-key (kbd "C-`") 'outline-show-entry)
 (global-set-key (kbd "C-~") 'outline-hide-entry)
+
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
 
 ;; (require 'ox-latex)
 ;; (require 'pdf-tools)
@@ -190,6 +251,24 @@
 (turn-off-evil-vimish-fold-mode)
 (vimish-fold-from-marks)
 
+;; (global-whitespace-mode 1)
+;; (progn
+;;   (setq whitespace-style (quote (face spaces tabs space-mark tab-mark )))
+;;   (setq whitespace-display-mappings
+;;         '((space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」; 4347
+;;           (tab-mark 9 [9655 9] [92 9])))) ; tabs
+;; (add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
+;; (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'nasm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
+
+(require 'eglot)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+
 (setq
  split-width-threshold 0
  split-height-threshold nil)
@@ -224,24 +303,56 @@
         org-fontify-emphasized-text t
         ;; org-ellipsis "➞"
         ; org-add-link-type "yt" #'make-yt-link
-        org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)"))
+        org-todo-keywords '((sequence "TODO(t)" "TIP(T)" "INPROGRESS(i)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)"))
         org-todo-keyword-faces
         '(("TODO" :foreground "#943d84" :weight bold :underline t)
+          ("TIP" :foreground "#29e3e3")
           ("WAITING" :foreground "#9f7efe" :weight normal :underline t)
           ("INPROGRESS" :foreground "#0098dd" :weight normal :underline t)
           ("DONE" :strike-through t :foreground "#2F2F4A" :background nil :weight light :underline t)
           ("CANCELLED" :strike-through t :foreground "#de286e" :background nil :weight light :underline t))
-        ;; org-priority-faces '((?A :foreground "#de286e")
-        ;;                      (?B :foreground "#0098dd")
-        ;;                      (?C :foreground "#a1a1dd"))
+        org-priority-faces '((?A :foreground "#de286e")
+                             (?B :foreground "#0098dd")
+                             (?C :foreground "#a1a1dd"))
         ; org-tags-column -80
     ))
 (setq org-directory "~/org/")
+
+;; (defun md-auto-export-on()
+;;   (interactive)
+;;     (add-hook 'after-save-hook 'org-md-export-to-markdown)
+;;     )
+;; (eval-after-load 'org-mode
+;;   '(local-set-key (kbd "C-m") #'md-auto-export-on))
 
 (setq org-startup-folded t)
 
 ; (defun make-yt-link (youtube_id)
 ;   (browse-url (concat "https://www.youtube.com/embed/" youtube_id)))
+
+(use-package org-brain :ensure t
+  :init
+  (setq org-brain-path "~/org/brain/")
+  ;; For Evil users
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+  :config
+  (bind-key "C-c b" 'org-brain-prefix-map org-mode-map)
+  (setq org-id-track-globally t)
+  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+  (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
+  (push '("b" "Brain" plain (function org-brain-goto-end)
+          "* %i%?" :empty-lines 1)
+        org-capture-templates)
+  (setq org-brain-visualize-default-choices 'all)
+  (setq org-brain-title-max-length 12)
+  (setq org-brain-include-file-entries nil
+        org-brain-file-entries-use-title nil))
+
+;; Allows you to edit entries directly from org-brain-visualize
+(use-package polymode
+  :config
+  (add-hook 'org-brain-visualize-mode-hook #'org-brain-polymode))
 
 (use-package! org-fancy-priorities
   :hook (org-mode . org-fancy-priorities-mode)
@@ -296,5 +407,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-;; (org-babel-load-file (expand-file-name "~/.doom.d/config.org"))
